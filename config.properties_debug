@@ -1,0 +1,12 @@
+#Mon May 20 10:44:49 CEST 2013
+FolderPath=/home/cotes/test/dataset/
+MaxWaitTime=4000
+MinWaitTime=2000
+TreeChilds=1
+SizeMin=512
+TreeTotalData=5120
+TreeLevels=1
+PercentageModified=5
+ModificationSize=50
+PercentageModify=20
+SizeMax=4096

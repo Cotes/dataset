@@ -1,0 +1,17 @@
+TreeLevels=3
+TreeChilds=3
+TreeTotalData=1572864
+FolderPath=/home/cotes/test/dataset/
+PercentageModified=5
+
+# Small files
+MinSize=512
+MaxSize=4096
+TimeMin=100
+TimeMax=3000
+PercentageModify=20
+
+# Dataset properties
+MinWaitTime=100
+MaxWaitTime=2500
+ModificationSize=40
