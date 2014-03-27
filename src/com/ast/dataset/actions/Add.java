@@ -1,5 +1,11 @@
 package com.ast.dataset.actions;
 
+import java.io.IOException;
+
+import com.ast.dataset.executor.DatasetExecutor;
+import com.ast.dataset.util.Config;
+import com.ast.dataset.util.FilesOp;
+
 public class Add extends Action {
     
     private String srcPath;
@@ -11,6 +17,13 @@ public class Add extends Action {
         this.destPath = destPath;
     }
 
+	@Override
+	public void performAction(DatasetExecutor executor) throws IOException {
+		String srcPath = Config.getAddPathFolder()+this.getSrcPath();
+		String dstPath = Config.getFolderPath()+this.getDestPath()+this.getSrcPath().substring(1);
+		FilesOp.moveFile(srcPath, dstPath);
+	}
+    
     public String getSrcPath( ) {
         return srcPath;
     }
@@ -32,4 +45,5 @@ public class Add extends Action {
         String str = this.getSecondToExecute()+" ADD "+srcPath+" "+destPath+"\n";
         return str;
     }
+
 }

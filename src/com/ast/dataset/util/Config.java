@@ -13,12 +13,14 @@ public class Config {
 	private static Properties properties;
 	private static Logger logger = Logger.getLogger(Config.class);
 
-	public static void loadProperties() throws IOException {
+	public static void loadProperties(String configPath) throws IOException {
 
 		properties = new Properties();
 		
+		String path = (configPath == null) ? Constants.PROP_FILENAME : configPath;
+		
 		try {
-			properties.load(new FileInputStream(Constants.PROP_FILENAME));
+			properties.load(new FileInputStream(path));
 			validateProperties();
 			logger.info("config.properties file loaded.");
 		} catch (IOException e) {
@@ -27,7 +29,7 @@ public class Config {
 
 			validateProperties();
 
-			properties.store(new FileOutputStream(Constants.PROP_FILENAME), null);
+			properties.store(new FileOutputStream(path), null);
 			Logger.getLogger(Properties.class.getName()).info("New properties file created with default values.");
 		}
 		displayConfiguration();
@@ -41,6 +43,7 @@ public class Config {
 		checkProperty(Constants.PROP_TREE_LEVELS, Constants.DEFAULT_TREE_LEVELS);
 		checkProperty(Constants.PROP_TREE_CHILDS, Constants.DEFAULT_TREE_CHILDS);
 		checkProperty(Constants.PROP_TREE_TOTAL_DATA, Constants.DEFAULT_TREE_TOTAL_DATA);
+		checkProperty(Constants.PROP_FS_PATH, Constants.DEFAULT_FS_PATH);
 		checkProperty(Constants.PROP_FOLDER_PATH, Constants.DEFAULT_FOLDER_PATH);
 		checkProperty(Constants.PROP_PERCENTAGE_MODIFIED, Constants.DEFAULT_PERCENTAGE_MODIFIED);
 		
@@ -54,6 +57,12 @@ public class Config {
 		checkProperty(Constants.PROP_MODIFICATION_SIZE, Constants.DEFAULT_MODIFICATION_SIZE);
 		checkProperty(Constants.PROP_NUM_OPERATIONS, Constants.DEFAULT_NUM_OPERATIONS);
 		checkProperty(Constants.PROP_ADD_PATH_FOLDER, Constants.DEFAULT_ADD_PATH_FOLDER);
+		
+		//Check whether PROP_FS_PATH ends with / or not
+		String fsPath = properties.getProperty(Constants.PROP_FS_PATH); 
+		if(!fsPath.endsWith("/")){
+			properties.setProperty(Constants.PROP_FS_PATH, fsPath + "/");
+		}
 		
 	}
 	
@@ -88,6 +97,10 @@ public class Config {
 	
 	public static String getFolderPath() {
 		return properties.getProperty(Constants.PROP_FOLDER_PATH);
+	}
+	
+	public static String getFSPath() {
+		return properties.getProperty(Constants.PROP_FS_PATH);
 	}
 	
 	public static int getPercentageModified() {

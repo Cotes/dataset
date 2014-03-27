@@ -1,6 +1,10 @@
 package com.ast.dataset.actions;
 
-public class Action {
+import java.io.IOException;
+
+import com.ast.dataset.executor.DatasetExecutor;
+
+public abstract class Action {
     
     private int secondToExecute;
     
@@ -8,6 +12,8 @@ public class Action {
         this.secondToExecute = secondToExecute;
     }
 
+    public abstract void performAction(DatasetExecutor executor) throws IOException; 
+    
     public int getSecondToExecute( ) {
         return secondToExecute;
     }

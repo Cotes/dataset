@@ -8,6 +8,7 @@ public class Constants {
 	public static final String PROP_TREE_LEVELS = "TreeLevels";
 	public static final String PROP_TREE_CHILDS = "TreeChilds";
 	public static final String PROP_TREE_TOTAL_DATA = "TreeTotalData";
+	public static final String PROP_FS_PATH = "FSPath";
 	public static final String PROP_FOLDER_PATH = "FolderPath";
 	public static final String PROP_PERCENTAGE_MODIFIED = "PercentageModified";
 	
@@ -27,6 +28,8 @@ public class Constants {
 	public static final int DEFAULT_TREE_LEVELS = 3;
 	public static final int DEFAULT_TREE_CHILDS = 2;
 	public static final int DEFAULT_TREE_TOTAL_DATA = 76800;
+	public static final String DEFAULT_FS_PATH = "/home/sergi/test/fs/";
+	//TODO check this later
 	public static final String DEFAULT_FOLDER_PATH = "/home/cotes/test/dataset/";
 	public static final int DEFAULT_PERCENTAGE_MODIFIED = 5;
 	
