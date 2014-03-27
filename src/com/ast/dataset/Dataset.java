@@ -16,7 +16,7 @@ import org.apache.log4j.xml.DOMConfigurator;
 
 import com.ast.dataset.actions.Action;
 import com.ast.dataset.executor.DatasetExecutor;
-import com.ast.dataset.generator.DatasetGenerator;
+import com.ast.dataset.generator.DatasetGeneratorOLD;
 import com.ast.dataset.generator.FoldersNotCreated;
 import com.ast.dataset.generator.TreeFSGenerator;
 import com.ast.dataset.reader.DatasetReader;
@@ -27,7 +27,7 @@ public class Dataset {
 	private static final Logger logger = Logger.getLogger(Dataset.class.getName());
 	
 	private TreeFSGenerator fsGenerator;
-	private DatasetGenerator datasetGenerator;
+	private DatasetGeneratorOLD datasetGenerator;
 	private DatasetReader reader;
 	private DatasetExecutor executor;
 	private HashMap<String, Integer> files;
@@ -53,7 +53,7 @@ public class Dataset {
 		
 		// Initializations
 		this.executor = new DatasetExecutor(Config.getFolderPath());
-		this.datasetGenerator = new DatasetGenerator( Config.getTreeTotalData(), Config.getPercentageModified() );
+		this.datasetGenerator = new DatasetGeneratorOLD( Config.getTreeTotalData(), Config.getPercentageModified() );
 		
 		String folder = Config.getFolderPath();
         int levels = Config.getTreeLevels();
@@ -113,6 +113,10 @@ public class Dataset {
         } catch ( IOException e ) {
             e.printStackTrace();
         }
+	}
+	
+	public void generateRealisticDataset(String path) {
+		
 	}
 	
 	public void executeDataset(String path, String test) throws Exception {
@@ -184,6 +188,8 @@ public class Dataset {
 				dataset.generateDatasetUpdates(datasetFilePath);
 			} else if (testName.equalsIgnoreCase("beginning")) {
 				dataset.generateDatasetFromBeginning(datasetFilePath);
+			} else if (testName.equalsIgnoreCase("aaa")) {
+				
 			} else {
 				dataset.generateGenericDataset(datasetFilePath);
 			}

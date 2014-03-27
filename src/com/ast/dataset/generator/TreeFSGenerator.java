@@ -30,6 +30,10 @@ public class TreeFSGenerator {
 	
 	public TreeFSGenerator(String rootFolder, int levels, int foldersPerLevel, int totalData) {
 		this.rootFolder = rootFolder;
+		if (!this.rootFolder.endsWith("/")) {
+			this.rootFolder += "/";
+		}
+		
 		this.levels = levels;
 		this.foldersPerLevel = foldersPerLevel;
 		this.totalData = totalData;

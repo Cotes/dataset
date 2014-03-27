@@ -20,9 +20,9 @@ import com.ast.dataset.actions.Update;
 import com.ast.dataset.util.Config;
 import com.ast.dataset.util.FilesOp;
 
-public class DatasetGenerator {
+public class DatasetGeneratorOLD {
     
-    private Logger logger = Logger.getLogger( DatasetGenerator.class.getName() );
+    private Logger logger = Logger.getLogger( DatasetGeneratorOLD.class.getName() );
 	
 	public enum ModificationPart {B, E, M, BE, BM, ME, BEM};
 	public enum Operation {ADD, UPDATE, REMOVE};
@@ -35,7 +35,7 @@ public class DatasetGenerator {
 	private int modificationSize;
 	private int totalTime;
 	
-	public DatasetGenerator(int totalData) {
+	public DatasetGeneratorOLD(int totalData) {
 		this.totalData = totalData;
 		this.random = new Random();
 		this.minWaitTime = Config.getMinWaitTime();
@@ -43,14 +43,9 @@ public class DatasetGenerator {
 		this.modificationSize = Config.getModificationSize();
 	}
 	
-	public DatasetGenerator(int totalData, int modificationPercentage) {
+	public DatasetGeneratorOLD(int totalData, int modificationPercentage) {
 		this(totalData);
-		//this.totalData = totalData;
 		this.modificationPercentage = modificationPercentage;
-		/*this.random = new Random();
-		this.minWaitTime = Config.getMinWaitTime();
-		this.maxWaitTime = Config.getMaxWaitTime();
-		this.modificationSize = Config.getModificationSize();*/
 	}
 	
 	public void generateOnlyUpdates(String datasetFile, HashMap<String, Integer> files) throws IOException {
