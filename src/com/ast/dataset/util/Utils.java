@@ -14,4 +14,15 @@ public class Utils {
 		}
 	}
 	
+	public static boolean isBetween(int value, int lowLimit, int highLimit) {
+		
+		boolean between = false;
+		
+		if (value >= lowLimit && value < highLimit) {
+			between = true;
+		}
+		
+		return between;
+	}
+	
 }

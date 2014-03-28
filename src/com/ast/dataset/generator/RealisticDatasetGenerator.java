@@ -2,6 +2,7 @@ package com.ast.dataset.generator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import com.ast.dataset.models.SimpleFile;
 import com.ast.dataset.models.SnapshotFile;
@@ -17,10 +18,12 @@ public class RealisticDatasetGenerator extends DatasetGenerator {
 	private static final float P_D = 0.5F;
 	
 	private int numSnapshots;
+	private Random random;
 
 	public RealisticDatasetGenerator(int numSnapshots) {
 		super();
 		this.numSnapshots = numSnapshots;
+		this.random = new Random();
 	}
 
 	@Override
@@ -49,7 +52,7 @@ public class RealisticDatasetGenerator extends DatasetGenerator {
 	private void nextSnapshot(List<SnapshotFile> files) {
 		
 		for (SnapshotFile file : files) {
-			State newState = file.getState().nextState();
+			State newState = file.getState().nextState(this.random);
 			file.setState(newState);
 		}
 		
