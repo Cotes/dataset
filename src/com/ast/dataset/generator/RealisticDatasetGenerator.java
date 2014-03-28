@@ -115,7 +115,11 @@ public class RealisticDatasetGenerator extends DatasetGenerator {
 			action = null;
 		} else if (state instanceof Deleted) {
 			// TODO check if deleted before
-			action = new Remove(file.getFilename());
+			Deleted deleted = (Deleted) state;
+			if (!deleted.isWritten()) {
+				action = new Remove(file.getFilename());
+				deleted.setWritten(true);
+			}
 		}
 		
 		return action;

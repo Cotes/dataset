@@ -29,7 +29,7 @@ public class RealisticDatasetTest {
 		int i = 0;
 		while (i < 1000) {
 			int size = random.nextInt(4096);
-			String filename = RandomStringUtils.random(7) + ".gz";
+			String filename = RandomStringUtils.randomAlphabetic(7) + ".gz";
 			SimpleFile file = new SimpleFile(filename, size + 512);
 			files.add(file);
 			i++;
