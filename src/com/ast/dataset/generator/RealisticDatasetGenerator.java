@@ -32,10 +32,12 @@ public class RealisticDatasetGenerator extends DatasetGenerator {
 	private static final float P_D = 0.5F;*/
 	
 	private int numSnapshots;
+	private int training;
 	private Random random;
 
-	public RealisticDatasetGenerator(int numSnapshots) {
+	public RealisticDatasetGenerator(int trainingSnpashots, int numSnapshots) {
 		super();
+		this.training = trainingSnpashots;
 		this.numSnapshots = numSnapshots;
 		this.random = new Random();
 	}
@@ -44,11 +46,12 @@ public class RealisticDatasetGenerator extends DatasetGenerator {
 	public void generateDataset( String datasetFile, List<SimpleFile> simpleFiles ) {
 		
 		List<SnapshotFile> files = convertToSnapshotFiles(simpleFiles);
+		List<SnapshotFile> initialFiles = trainFiles(files);
 		
 		try {
 			FileWriter fstream = new FileWriter(datasetFile);
 			BufferedWriter out = new BufferedWriter(fstream);
-	
+			saveChanges(out, initialFiles);
 			saveChanges(out, files);
 			
 			for (int i=0; i < this.numSnapshots; i++) {
@@ -62,6 +65,27 @@ public class RealisticDatasetGenerator extends DatasetGenerator {
 			logger.error(e);
 		}
 		
+	}
+	
+	private List<SnapshotFile> trainFiles(List<SnapshotFile> files) {
+		
+		for (int i=0; i<this.training; i++) {
+			nextSnapshot(files);
+		}
+		
+		// After the training, it is necessary to add modify files
+		// for the correct execution of the dataset.
+		List<SnapshotFile> initialFiles = new ArrayList<SnapshotFile>();
+		for (SnapshotFile file : files) {
+			State state = file.getState();
+			if (!(state instanceof New)) {
+				State newState = new New();
+				SnapshotFile initial = new SnapshotFile(file.getFilename(), file.getSize(), newState);
+				initialFiles.add(initial);
+			}
+		}
+		
+		return initialFiles;
 	}
 	
 	private List<SnapshotFile> convertToSnapshotFiles( List<SimpleFile> simpleFiles ) {
@@ -114,7 +138,6 @@ public class RealisticDatasetGenerator extends DatasetGenerator {
 		} else if (state instanceof Unmodified) {
 			action = null;
 		} else if (state instanceof Deleted) {
-			// TODO check if deleted before
 			Deleted deleted = (Deleted) state;
 			if (!deleted.isWritten()) {
 				action = new DummyRemove(file.getFilename());

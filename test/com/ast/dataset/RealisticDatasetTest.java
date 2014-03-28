@@ -17,7 +17,7 @@ public class RealisticDatasetTest {
 		
 		List<SimpleFile> files = getSimpleFilesList();
 		Config.loadProperties("test.properties");
-		RealisticDatasetGenerator generator = new RealisticDatasetGenerator(50);
+		RealisticDatasetGenerator generator = new RealisticDatasetGenerator(10, 50);
 		generator.generateDataset("test.txt", files);
 
 	}
