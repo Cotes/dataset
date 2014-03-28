@@ -9,11 +9,11 @@ import java.util.Random;
 
 import org.apache.log4j.Logger;
 
-import com.ast.dataset.actions.Action;
-import com.ast.dataset.actions.Add;
 import com.ast.dataset.actions.ByteRange;
-import com.ast.dataset.actions.Remove;
-import com.ast.dataset.actions.Update;
+import com.ast.dataset.actions.dummies.DummyAction;
+import com.ast.dataset.actions.dummies.DummyAdd;
+import com.ast.dataset.actions.dummies.DummyRemove;
+import com.ast.dataset.actions.dummies.DummyUpdate;
 import com.ast.dataset.models.SimpleFile;
 import com.ast.dataset.models.SnapshotFile;
 import com.ast.dataset.states.Deleted;
@@ -27,8 +27,9 @@ public class RealisticDatasetGenerator extends DatasetGenerator {
 	private Logger logger = Logger.getLogger( RealisticDatasetGenerator.class.getName() );
 	
 	// Home dataset probabilites in percents of file state transitions
-	private static final float P_N = 4F;
-	private static final float P_D = 0.5F;
+	// TODO !!!!
+	/*private static final float P_N = 4F;
+	private static final float P_D = 0.5F;*/
 	
 	private int numSnapshots;
 	private Random random;
@@ -88,7 +89,7 @@ public class RealisticDatasetGenerator extends DatasetGenerator {
 		
 		for (SnapshotFile file : files) {
 			try {
-				Action action = this.getActionFromSnapshotFile(file);
+				DummyAction action = this.getActionFromSnapshotFile(file);
 				if (action != null) {
 					out.write(action.toString());
 				}
@@ -100,24 +101,23 @@ public class RealisticDatasetGenerator extends DatasetGenerator {
 		
 	}
 	
-	private Action getActionFromSnapshotFile(SnapshotFile file) throws IOException {
+	private DummyAction getActionFromSnapshotFile(SnapshotFile file) throws IOException {
 	
 		State state = file.getState();
-		Action action = null;
+		DummyAction action = null;
 		
 		if (state instanceof New) {
-			// TODO paths???
-			action = new Add(file.getFilename(), file.getFilename());
+			action = new DummyAdd(file.getFilename(), file.getSize());
 		} else if (state instanceof Modified) {
 			ArrayList<ByteRange> modifications = generateUpdate(file.getSize());
-			action = new Update(file.getFilename(), modifications);
+			action = new DummyUpdate(file.getFilename(), modifications);
 		} else if (state instanceof Unmodified) {
 			action = null;
 		} else if (state instanceof Deleted) {
 			// TODO check if deleted before
 			Deleted deleted = (Deleted) state;
 			if (!deleted.isWritten()) {
-				action = new Remove(file.getFilename());
+				action = new DummyRemove(file.getFilename());
 				deleted.setWritten(true);
 			}
 		}

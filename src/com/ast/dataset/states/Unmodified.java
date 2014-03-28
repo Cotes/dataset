@@ -8,7 +8,7 @@ public class Unmodified implements State {
 
 	private static final int P_UM = 14; // (0.14%) => 0.14/100 * 10000 = 14
 	private static final int P_UD = 35;
-	private static final int P_UU = 9951;
+	//private static final int P_UU = 9951;
 	
 	@Override
 	public State nextState(Random random) {

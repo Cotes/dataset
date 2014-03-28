@@ -8,7 +8,7 @@ public class Modified implements State {
 
 	private static final int P_MU = 54;
 	private static final int P_MD = 10;
-	private static final int P_MM = 36;
+	//private static final int P_MM = 36;
 	
 	@Override
 	public State nextState(Random random) {
