@@ -2,6 +2,8 @@ package com.ast.dataset.states;
 
 import java.util.Random;
 
+import com.ast.dataset.actions.Action;
+import com.ast.dataset.actions.Add;
 import com.ast.dataset.util.Utils;
 
 public class New implements State {

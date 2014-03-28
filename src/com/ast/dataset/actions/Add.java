@@ -11,7 +11,11 @@ public class Add extends Action {
     private String srcPath;
     private String destPath;
     
-    public Add(int secondToExecute, String srcPath, String destPath) {
+    public Add(String srcPath, String destPath) {
+        this(null, srcPath, destPath);
+    }
+    
+    public Add(Integer secondToExecute, String srcPath, String destPath) {
         super(secondToExecute);
         this.srcPath = srcPath;
         this.destPath = destPath;

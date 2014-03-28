@@ -10,7 +10,11 @@ public class Remove extends Action {
 
 	private String filePath;
 
-	public Remove(int secondToExecute, String filePath) {
+	public Remove(String filePath) {
+		this(null, filePath);
+	}
+	
+	public Remove(Integer secondToExecute, String filePath) {
 		super(secondToExecute);
 		this.filePath = filePath;
 	}

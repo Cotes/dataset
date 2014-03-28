@@ -2,8 +2,8 @@ package com.ast.dataset.models;
 
 public class SimpleFile {
 
-	private String filename;
-	private int size;
+	protected String filename;
+	protected int size;
 	
 	public SimpleFile(String filename, int size) {
 		this.filename = filename;

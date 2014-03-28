@@ -14,8 +14,12 @@ public class Update extends Action {
 
 	private String filePath;
 	ArrayList<ByteRange> modifications;
+	
+	public Update(String filePath, ArrayList<ByteRange> modifications) {
+		this(null, filePath, modifications);
+	}
 
-	public Update(int secondToExecute, String filePath, ArrayList<ByteRange> modifications) {
+	public Update(Integer secondToExecute, String filePath, ArrayList<ByteRange> modifications) {
 		super(secondToExecute);
 		this.filePath = filePath;
 		this.modifications = modifications;

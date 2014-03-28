@@ -27,7 +27,7 @@ public abstract class DatasetGenerator {
 	
 	public abstract void generateDataset(String datasetFile, List<SimpleFile> files);
 
-	protected ArrayList<ByteRange> generateUpdate(Object fileToModify, int fileSize) throws IOException {
+	protected ArrayList<ByteRange> generateUpdate(int fileSize) throws IOException {
         
         ModificationPart modificationPart = this.getModificationPart();
         
@@ -40,35 +40,35 @@ public abstract class DatasetGenerator {
         case E:
         case M:
             bs1 = this.getRealisticByteModification(fileSize, modificationPart);
-            ranges = this.modifyFile(fileToModify, fileSize, bs1);
+            ranges = this.modifyFile(fileSize, bs1);
             break;
         case BE:
             bs1 = this.getRealisticByteModification(fileSize, ModificationPart.B);
             bs2 = this.getRealisticByteModification(fileSize, ModificationPart.E);
-            ranges = this.modifyFile(fileToModify, fileSize, bs1, bs2);
+            ranges = this.modifyFile(fileSize, bs1, bs2);
             break;
         case BM:
             bs1 = this.getRealisticByteModification(fileSize, ModificationPart.B);
             bs2 = this.getRealisticByteModification(fileSize, ModificationPart.M);
-            ranges = this.modifyFile(fileToModify, fileSize, bs1, bs2);
+            ranges = this.modifyFile(fileSize, bs1, bs2);
             break;
         case ME:
             bs1 = this.getRealisticByteModification(fileSize, ModificationPart.M);
             bs2 = this.getRealisticByteModification(fileSize, ModificationPart.E);
-            ranges = this.modifyFile(fileToModify, fileSize, bs1, bs2);
+            ranges = this.modifyFile(fileSize, bs1, bs2);
             break;
         case BEM:
             bs1 = this.getRealisticByteModification(fileSize, ModificationPart.B);
             bs2 = this.getRealisticByteModification(fileSize, ModificationPart.E);
             bs3 = this.getRealisticByteModification(fileSize, ModificationPart.M);
-            ranges = this.modifyFile(fileToModify, fileSize, bs1, bs2, bs3);
+            ranges = this.modifyFile(fileSize, bs1, bs2, bs3);
             break;
         }
         
         return ranges;
 	}
 
-	private ArrayList<ByteRange> modifyFile(Object fileToModify, int fileSize, int ... bytesStart) throws IOException {
+	private ArrayList<ByteRange> modifyFile(int fileSize, int ... bytesStart) throws IOException {
 		
 		ArrayList<ByteRange> ranges = new ArrayList<ByteRange>();
 
