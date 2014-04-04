@@ -18,7 +18,7 @@ public class RealisticDatasetTest {
 		
 		List<SimpleFile> files = getSimpleFilesList();
 		Config.loadProperties("test.properties");
-		RealisticDatasetGenerator generator = new RealisticDatasetGenerator(10, 50);
+		RealisticDatasetGenerator generator = new RealisticDatasetGenerator(10, 200);
 		generator.generateDataset("test.txt", files);
 
 	}
@@ -27,7 +27,7 @@ public class RealisticDatasetTest {
 		
 		List<SimpleFile> files = new ArrayList<SimpleFile>();
 		int i = 0;
-		while (i < 1000) {
+		while (i < 200) {
 			String filename = RandomStringUtils.randomAlphabetic(7) + ".gz";
 			SimpleFile file = new SimpleFile(filename, getFileSize());
 			files.add(file);
@@ -84,7 +84,7 @@ public class RealisticDatasetTest {
 			maxSize = 16384*1024;
 		} else if (Utils.isBetween(value, 99, 100)) {
 			minSize = 16384*1024;
-			maxSize = 262144*1024;
+			maxSize = 65536*1024;
 		} 
 		
 		int size = minSize + random.nextInt(maxSize-minSize+1);

@@ -59,8 +59,8 @@ public abstract class DatasetGenerator {
             break;
         case BEM:
             bs1 = this.getRealisticByteModification(fileSize, ModificationPart.B);
-            bs2 = this.getRealisticByteModification(fileSize, ModificationPart.E);
-            bs3 = this.getRealisticByteModification(fileSize, ModificationPart.M);
+            bs2 = this.getRealisticByteModification(fileSize, ModificationPart.M);
+            bs3 = this.getRealisticByteModification(fileSize, ModificationPart.E);
             ranges = this.modifyFile(fileSize, bs1, bs2, bs3);
             break;
         }
@@ -73,12 +73,18 @@ public abstract class DatasetGenerator {
 		ArrayList<ByteRange> ranges = new ArrayList<ByteRange>();
 
 		for (int byteStart : bytesStart) {
-			int byteEnd = byteStart+this.modificationSize; // Default 40 KB
+			int byteEnd;
+			if (byteStart == -1 || byteStart == 0) {
+				byteEnd = this.modificationSize * 1024;
+			} else {
+				byteEnd = byteStart+this.modificationSize * 1024; // Default 40 KB
+			}
 			
-			if (byteEnd > fileSize) {
+			/*if (byteEnd > fileSize) {
 				// TODO change this to modify always the same data size
 				byteEnd = fileSize;
-			}
+			}*/
+			
 			ranges.add(new ByteRange(byteStart, byteEnd));
 		}
 		
@@ -87,26 +93,23 @@ public abstract class DatasetGenerator {
 	
 	private int getRealisticByteModification(int fileSize, ModificationPart part) {
 		
-		int filePart = fileSize/3;
-		int multi;
+		int byteStart;
 		
 		switch(part) {
 		case B:
-			multi = 0;
+			byteStart = 0;
 			break;
 		case E:
-			multi = 2;
+			byteStart = -1;
 			break;
 		case M:
-			multi = 1;
-			break;
 		default:
-			multi = 2;
+			int offset = (int)(fileSize*0.1F);
+			int start = offset;
+			int end = fileSize-offset;
+			byteStart = start + random.nextInt(end - start + 1);
 			break;
 		}
-		
-		int byteStart = random.nextInt(filePart);
-		byteStart = multi*filePart + byteStart;
 		
 		return byteStart;
 	}

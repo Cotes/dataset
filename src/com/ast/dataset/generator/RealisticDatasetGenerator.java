@@ -103,8 +103,19 @@ public class RealisticDatasetGenerator extends DatasetGenerator {
 	private void nextSnapshot(List<SnapshotFile> files) {
 		
 		for (SnapshotFile file : files) {
-			State newState = file.getState().nextState(this.random);
-			file.setState(newState);
+			if (file.getSize() >= 4194304 && file.getState() instanceof New) {
+				// Files >= 4MB and NEW state change to UNMODIFIED
+				Unmodified unmodified = new Unmodified();
+				file.setState(unmodified);
+				continue;
+			} else if (file.getSize() >= 4194304) {
+				// Files >= 4MB don't make changes.
+				continue;
+			} else {
+				// Files < than 4MB process as normals.
+				State newState = file.getState().nextState(this.random);
+				file.setState(newState);
+			}
 		}
 		
 	}

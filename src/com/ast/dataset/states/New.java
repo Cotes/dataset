@@ -14,6 +14,7 @@ public class New implements State {
 	public State nextState(Random random) {
 		
 		State newState;
+		
 		int value = random.nextInt(100);
 		
 		if (Utils.isBetween(value, 0, P_NM)) {
