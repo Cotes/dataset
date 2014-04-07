@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.log4j.Logger;
 
 import com.ast.dataset.actions.ByteRange;
@@ -21,15 +22,16 @@ import com.ast.dataset.states.Modified;
 import com.ast.dataset.states.New;
 import com.ast.dataset.states.State;
 import com.ast.dataset.states.Unmodified;
+import com.ast.dataset.util.Utils;
 
 public class RealisticDatasetGenerator extends DatasetGenerator {
 	
 	private Logger logger = Logger.getLogger( RealisticDatasetGenerator.class.getName() );
 	
 	// Home dataset probabilites in percents of file state transitions
+	private static final float P_N = 4F;
 	// TODO !!!!
-	/*private static final float P_N = 4F;
-	private static final float P_D = 0.5F;*/
+	/*private static final float P_D = 0.5F;*/
 	
 	private int numSnapshots;
 	private int training;
@@ -52,11 +54,14 @@ public class RealisticDatasetGenerator extends DatasetGenerator {
 			FileWriter fstream = new FileWriter(datasetFile);
 			BufferedWriter out = new BufferedWriter(fstream);
 			saveChanges(out, initialFiles);
+			//out.write("{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{\n");
 			saveChanges(out, files);
+			//out.write("}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}\n");
 			
 			for (int i=0; i < this.numSnapshots; i++) {
 				nextSnapshot(files);
 				saveChanges(out, files);
+				//out.write("/////////////////////\\\\\\\\\\\\\\\\\\\n");
 			}
 			
 			out.close();
@@ -102,20 +107,33 @@ public class RealisticDatasetGenerator extends DatasetGenerator {
 
 	private void nextSnapshot(List<SnapshotFile> files) {
 		
+		int count = 0;
+		
 		for (SnapshotFile file : files) {
 			if (file.getSize() >= 4194304 && file.getState() instanceof New) {
 				// Files >= 4MB and NEW state change to UNMODIFIED
 				Unmodified unmodified = new Unmodified();
 				file.setState(unmodified);
+				count++;
 				continue;
 			} else if (file.getSize() >= 4194304) {
 				// Files >= 4MB don't make changes.
+				count++;
 				continue;
 			} else {
 				// Files < than 4MB process as normals.
 				State newState = file.getState().nextState(this.random);
 				file.setState(newState);
+				if (!(newState instanceof Deleted))	count++;
 			}
+		}
+		
+		// Create new files
+		int newFiles = Math.round(count*P_N/100);
+		for (int i=0; i<newFiles; i++) {
+			String filename = RandomStringUtils.randomAlphabetic(7) + ".gz";
+			SnapshotFile file = new SnapshotFile(filename, getFileSize(), new New());
+			files.add(file);
 		}
 		
 	}
@@ -145,6 +163,8 @@ public class RealisticDatasetGenerator extends DatasetGenerator {
 			action = new DummyAdd(file.getFilename(), file.getSize());
 		} else if (state instanceof Modified) {
 			ArrayList<ByteRange> modifications = generateUpdate(file.getSize());
+			int bytesAdded = this.getBytesAdded(modifications);
+			file.setSize(file.getSize() + bytesAdded);
 			action = new DummyUpdate(file.getFilename(), modifications);
 		} else if (state instanceof Unmodified) {
 			action = null;
@@ -157,6 +177,60 @@ public class RealisticDatasetGenerator extends DatasetGenerator {
 		}
 		
 		return action;
+	}
+	
+	private int getFileSize() {
+		
+		Random random = new Random();
+		int value = random.nextInt(100);
+		
+		int minSize=0, maxSize=0;	// In bytes
+		if (Utils.isBetween(value, 0, 40)) {
+			minSize = 1;
+			maxSize = 4*1024;
+		} else if (Utils.isBetween(value, 40, 50)) {
+			minSize = 4*1024;
+			maxSize = 8*1024;
+		} else if (Utils.isBetween(value, 50, 58)) {
+			minSize = 8*1024;
+			maxSize = 16*1024;
+		} else if (Utils.isBetween(value, 58, 66)) {
+			minSize = 16*1024;
+			maxSize = 32*1024;
+		} else if (Utils.isBetween(value, 66, 72)) {
+			minSize = 32*1024;
+			maxSize = 64*1024;
+		} else if (Utils.isBetween(value, 72, 78)) {
+			minSize = 64*1024;
+			maxSize = 128*1024;
+		} else if (Utils.isBetween(value, 78, 81)) {
+			minSize = 128*1024;
+			maxSize = 256*1024;
+		} else if (Utils.isBetween(value, 81, 87)) {
+			minSize = 256*1024;
+			maxSize = 512*1024;
+		} else if (Utils.isBetween(value, 87, 90)) {
+			minSize = 512*1024;
+			maxSize = 1024*1024;
+		} else if (Utils.isBetween(value, 90, 94)) {
+			minSize = 1024*1024;
+			maxSize = 2048*1024;
+		} else if (Utils.isBetween(value, 94, 97)) {
+			minSize = 2048*1024;
+			maxSize = 4096*1024;
+		} else if (Utils.isBetween(value, 97, 98)) {
+			minSize = 4096*1024;
+			maxSize = 8192*1024;
+		} else if (Utils.isBetween(value, 98, 99)) {
+			minSize = 8192*1024;
+			maxSize = 16384*1024;
+		} else if (Utils.isBetween(value, 99, 100)) {
+			minSize = 16384*1024;
+			maxSize = 65536*1024;
+		} 
+		
+		int size = minSize + random.nextInt(maxSize-minSize+1);
+		return size;
 	}
 
 }

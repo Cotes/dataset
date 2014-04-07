@@ -13,7 +13,7 @@ import com.ast.dataset.util.Config;
 
 public abstract class DatasetGenerator {
 	
-	private Logger logger = Logger.getLogger( DatasetGenerator.class.getName() );
+	//private Logger logger = Logger.getLogger( DatasetGenerator.class.getName() );
 	public enum ModificationPart {B, E, M, BE, BM, ME, BEM};
 	public enum Operation {ADD, UPDATE, REMOVE};
 	
@@ -140,5 +140,21 @@ public abstract class DatasetGenerator {
 	
 	private int getModificationSize() {
 		return this.random.nextInt(maxModificationSize);
+	}
+	
+	public int getBytesAdded(ArrayList<ByteRange> ranges) {
+		
+		int bytesAdded = 0;
+		
+		for (ByteRange range : ranges) {
+			if (range.getByteStart() == 0 || range.getByteStart() == -1) {
+				bytesAdded += range.getByteEnd();
+			} /*else {
+				// TODO IMPORTANT: In modification bytes are not added, are modified!!
+				bytesAdded += (range.getByteEnd() - range.getByteStart());
+			}*/
+		}
+		
+		return bytesAdded;
 	}
 }
