@@ -136,6 +136,8 @@ public class RealisticDatasetGenerator extends DatasetGenerator {
 			files.add(file);
 		}
 		
+		assert (this.totalBytes >= 2147483648L); // 2GB
+		
 	}
 	
 	private void saveChanges(BufferedWriter out, List<SnapshotFile> files) {
@@ -175,6 +177,7 @@ public class RealisticDatasetGenerator extends DatasetGenerator {
 			if (!deleted.isWritten()) {
 				action = new DummyRemove(file.getFilename());
 				deleted.setWritten(true);
+				this.totalBytes -= file.getSize();
 			}
 		}
 		
