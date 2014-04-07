@@ -18,11 +18,11 @@ public abstract class DatasetGenerator {
 	public enum Operation {ADD, UPDATE, REMOVE};
 	
 	private Random random;
-	private int modificationSize;
+	private int maxModificationSize;
 	
 	public DatasetGenerator() {
 		this.random = new Random();
-		this.modificationSize = Config.getModificationSize();
+		this.maxModificationSize = Config.getMaxModificationSize();
 	}
 	
 	public abstract void generateDataset(String datasetFile, List<SimpleFile> files);
@@ -75,15 +75,10 @@ public abstract class DatasetGenerator {
 		for (int byteStart : bytesStart) {
 			int byteEnd;
 			if (byteStart == -1 || byteStart == 0) {
-				byteEnd = this.modificationSize * 1024;
+				byteEnd = getModificationSize();
 			} else {
-				byteEnd = byteStart+this.modificationSize * 1024; // Default 40 KB
+				byteEnd = byteStart+getModificationSize(); // Default 40 KB
 			}
-			
-			/*if (byteEnd > fileSize) {
-				// TODO change this to modify always the same data size
-				byteEnd = fileSize;
-			}*/
 			
 			ranges.add(new ByteRange(byteStart, byteEnd));
 		}
@@ -141,5 +136,9 @@ public abstract class DatasetGenerator {
 			part = ModificationPart.BEM;
 		}
 		return part;
+	}
+	
+	private int getModificationSize() {
+		return this.random.nextInt(maxModificationSize);
 	}
 }

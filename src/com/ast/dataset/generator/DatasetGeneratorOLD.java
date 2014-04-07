@@ -45,7 +45,7 @@ public class DatasetGeneratorOLD {
 		this.random = new Random();
 		this.minWaitTime = Config.getMinWaitTime();
 		this.maxWaitTime = Config.getMaxWaitTime();
-		this.modificationSize = Config.getModificationSize();
+		this.modificationSize = Config.getMaxModificationSize();
 	}
 
 	public DatasetGeneratorOLD(int totalData, int modificationPercentage) {

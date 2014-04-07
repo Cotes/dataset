@@ -19,7 +19,7 @@ public class Constants {
 	// Dataset constants
 	public static final String PROP_MIN_WAIT_TIME = "MinWaitTime";
 	public static final String PROP_MAX_WAIT_TIME = "MaxWaitTime";
-	public static final String PROP_MODIFICATION_SIZE = "ModificationSize";
+	public static final String PROP_MAX_MODIFICATION_SIZE = "MaxModificationSize";
 	public static final String PROP_NUM_OPERATIONS = "NumOp";
 	public static final String PROP_ADD_PATH_FOLDER = "AddPathFolder";
 	
@@ -40,7 +40,7 @@ public class Constants {
 	// Dataset
 	public static final int DEFAULT_MIN_WAIT_TIME = 3000; 	// ms
 	public static final int DEFAULT_MAX_WAIT_TIME = 6000; 	// ms
-	public static final int DEFAULT_MODIFICATION_SIZE = 40;	// KB
+	public static final int DEFAULT_MAX_MODIFICATION_SIZE = 250;	// Bytes
 	public static final int DEFAULT_NUM_OPERATIONS = 50;
 	public static final String DEFAULT_ADD_PATH_FOLDER = "/home/cotes/test/add_folder/";
 	

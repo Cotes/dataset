@@ -54,7 +54,7 @@ public class Config {
 		//Dataset
 		checkProperty(Constants.PROP_MIN_WAIT_TIME, Constants.DEFAULT_MIN_WAIT_TIME);
 		checkProperty(Constants.PROP_MAX_WAIT_TIME, Constants.DEFAULT_MAX_WAIT_TIME);
-		checkProperty(Constants.PROP_MODIFICATION_SIZE, Constants.DEFAULT_MODIFICATION_SIZE);
+		checkProperty(Constants.PROP_MAX_MODIFICATION_SIZE, Constants.DEFAULT_MAX_MODIFICATION_SIZE);
 		checkProperty(Constants.PROP_NUM_OPERATIONS, Constants.DEFAULT_NUM_OPERATIONS);
 		checkProperty(Constants.PROP_ADD_PATH_FOLDER, Constants.DEFAULT_ADD_PATH_FOLDER);
 		
@@ -124,8 +124,8 @@ public class Config {
 		return Integer.parseInt(properties.getProperty(Constants.PROP_MAX_WAIT_TIME));
 	}
 	
-	public static int getModificationSize() {
-		return Integer.parseInt(properties.getProperty(Constants.PROP_MODIFICATION_SIZE));
+	public static int getMaxModificationSize() {
+		return Integer.parseInt(properties.getProperty(Constants.PROP_MAX_MODIFICATION_SIZE));
 	}
 	
 	public static int getNumOperations() {
