@@ -36,12 +36,14 @@ public class RealisticDatasetGenerator extends DatasetGenerator {
 	private int numSnapshots;
 	private int training;
 	private Random random;
+	private long totalBytes;
 
 	public RealisticDatasetGenerator(int trainingSnpashots, int numSnapshots) {
 		super();
 		this.training = trainingSnpashots;
 		this.numSnapshots = numSnapshots;
 		this.random = new Random();
+		this.totalBytes = 0;
 	}
 
 	@Override
@@ -54,18 +56,16 @@ public class RealisticDatasetGenerator extends DatasetGenerator {
 			FileWriter fstream = new FileWriter(datasetFile);
 			BufferedWriter out = new BufferedWriter(fstream);
 			saveChanges(out, initialFiles);
-			//out.write("{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{{\n");
 			saveChanges(out, files);
-			//out.write("}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}\n");
 			
 			for (int i=0; i < this.numSnapshots; i++) {
 				nextSnapshot(files);
 				saveChanges(out, files);
-				//out.write("/////////////////////\\\\\\\\\\\\\\\\\\\n");
 			}
 			
 			out.close();
 			fstream.close();
+			System.out.println(this.totalBytes);
 		} catch (IOException e) {
 			logger.error(e);
 		}
@@ -161,10 +161,12 @@ public class RealisticDatasetGenerator extends DatasetGenerator {
 		
 		if (state instanceof New) {
 			action = new DummyAdd(file.getFilename(), file.getSize());
+			this.totalBytes += file.getSize();
 		} else if (state instanceof Modified) {
 			ArrayList<ByteRange> modifications = generateUpdate(file.getSize());
 			int bytesAdded = this.getBytesAdded(modifications);
 			file.setSize(file.getSize() + bytesAdded);
+			this.totalBytes += bytesAdded;
 			action = new DummyUpdate(file.getFilename(), modifications);
 		} else if (state instanceof Unmodified) {
 			action = null;
